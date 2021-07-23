@@ -1,38 +1,52 @@
-
-var person , person_running ; 
-var groundImage , ground;
+var path,boy, leftBoundary,rightBoundary;
+var pathImg,boyImg;
+var i;
 
 function preload(){
-  person_running = loadAnimation("Runner-1.png","Runner-2.png");
-  groundImage = loadImage("path.png");
+  pathImg = loadImage("path.png");
+  boyImg = loadAnimation("Runner-1.png","Runner-2.png");
 }
 
 function setup(){
+  
   createCanvas(400,400);
+  
+// Moving background
+path=createSprite(200,200);
+path.addImage(pathImg);
+path.velocityY = 4;
+path.scale=1.2;
 
-  ground = createSprite(200,200);
-  ground.addImage(groundImage);
-  ground.velocityY = -4
+//creating boy running
+boy = createSprite(180,340,30,30);
+boy.scale=0.08;
+boy.addAnimation("JakeRunning",boyImg);
   
-  person = createSprite(180,340,30,30);
-  person.addAnimation(person_running);
-  person.scale = 0.5;
-  
+// create left Boundary
+leftBoundary=createSprite(0,0,100,800);
+leftBoundary.visible = false;
 
-  
+//create right Boundary
+rightBoundary=createSprite(410,0,100,800);
+rightBoundary.visible = false;
 }
 
-
-function draw(){
+function draw() {
+  background(0);
+  path.velocityY = 4;
   
-  background("white");
- person.x = World.mouseX ; 
- edgese = createEdgeSprites();
- person.collide(edgese[3]);
+  // boy moving on Xaxis with mouse
+  boy.x = World.mouseX;
   
-  person.collide(ground);
-  if(ground.y>400){
-    ground.y = height/2
+  edges= createEdgeSprites();
+  boy.collide(edges[3]);
+  boy.collide(leftBoundary);
+  boy.collide(rightBoundary);
+  
+  //code to reset the background
+  if(path.y > 400 ){
+    path.y = height/2;
   }
+  
   drawSprites();
 }
